@@ -1,4 +1,4 @@
-name: Generate Random Color Snake
+name: Snake 7-Color Random On Load
 on:
   schedule:
     - cron: "0 0 * * *"
@@ -13,18 +13,17 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Random bright snake color
-        run: |
-          COLORS=(FF2B8B FF6FFF 00E4FF 00FF9D FFFF00 FF4D00 FF006E 9D4DFF 00FFC2)
-          SELECTED=${COLORS[$RANDOM % ${#COLORS[@]}]}
-          echo "COLOR_SNAKE=$SELECTED" >> $GITHUB_ENV
-
       - uses: Platane/snk/svg-only@v3
         with:
           github_user_name: xunyyds
           outputs: |
-            dist/snake.svg?color_snake=${{ env.COLOR_SNAKE }}&color_dots=#FF355E,#FFF700,#00FF3C,#00BFFF,#9933FF
-            dist/snake-dark.svg?palette=github-dark&color_snake=${{ env.COLOR_SNAKE }}&color_dots=#FF7EB7,#FFFF5E,#4DFF92,#4DC8FF,#D99CFF
+            dist/snake.svg?color_snake=ff0000&palette=github
+            dist/snake-dark.svg?color_snake=ff0000&palette=github-dark
+
+      - name: Add per-visit random color (7-color)
+        run: |
+          sed -i 's/<path/<path style="filter: hue-rotate($$(($$RANDOM % 7) * 51.4deg))"/g' dist/snake.svg
+          sed -i 's/<path/<path style="filter: hue-rotate($$(($$RANDOM % 7) * 51.4deg))"/g' dist/snake-dark.svg
 
       - name: Deploy to snake branch
         uses: peaceiris/actions-gh-pages@v4

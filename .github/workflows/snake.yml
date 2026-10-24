@@ -3,6 +3,12 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/**
+      - .github/workflows/snake.yml
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -13,6 +19,8 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+
       - uses: Platane/snk/svg-only@v3
         with:
           github_user_name: xunyyds
@@ -22,8 +30,14 @@ jobs:
 
       - name: Add per-visit random color (7-color)
         run: |
-          sed -i 's/<path/<path style="filter: hue-rotate($$(($$RANDOM % 7) * 51.4deg))"/g' dist/snake.svg
-          sed -i 's/<path/<path style="filter: hue-rotate($$(($$RANDOM % 7) * 51.4deg))"/g' dist/snake-dark.svg
+          python3 scripts/snake_color.py dist/snake.svg dist/snake-dark.svg
+
+      - name: Render activity stats
+        env:
+          STATS_USER: xunyyds
+          STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
+        run: |
+          python3 scripts/render_stats.py --out dist
 
       - name: Deploy to snake branch
         uses: peaceiris/actions-gh-pages@v4

@@ -13,15 +13,15 @@ text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC','Pin
 <rect x="0.5" y="0.5" width="879" height="263" rx="16" fill="#0d1117" stroke="#30363d"/>
 <rect x="26" y="26" width="4" height="21" rx="2" fill="#4493f8"/>
 <text x="40" y="43" class="title">活跃度统计</text>
-<text x="854" y="42" class="updated" text-anchor="end">更新于 2026-10-25 00:59 · UTC+8</text>
+<text x="854" y="42" class="updated" text-anchor="end">更新于 2026-10-25 03:11 · UTC+8</text>
 <line x1="26" y1="60" x2="854" y2="60" stroke="#30363d"/>
 <text x="48" y="86" class="head">指标</text>
 <text x="566" y="86" class="head" text-anchor="middle">今日</text>
 <text x="756" y="86" class="head" text-anchor="middle">累计</text>
 <line x1="26" y1="98" x2="854" y2="98" stroke="#30363d" stroke-opacity="0.6"/>
-<circle cx="34" cy="126" r="4" fill="#3fb950"/><text x="48" y="131" class="label">提交</text><text x="86" y="131" class="latin">COMMITS</text><rect x="543.5" y="111" width="45" height="30" rx="9" fill="#3fb950" fill-opacity="0.12"/><text x="566" y="134" class="value" fill="#e6edf3">3</text><text x="756" y="134" class="value" fill="#e6edf3">154</text>
+<circle cx="34" cy="126" r="4" fill="#3fb950"/><text x="48" y="131" class="label">提交</text><text x="86" y="131" class="latin">COMMITS</text><rect x="543.5" y="111" width="45" height="30" rx="9" fill="#3fb950" fill-opacity="0.12"/><text x="566" y="134" class="value" fill="#e6edf3">6</text><text x="756" y="134" class="value" fill="#e6edf3">157</text>
 <circle cx="34" cy="162" r="4" fill="#ab7df8"/><text x="48" y="167" class="label">PR</text><text x="74" y="167" class="latin">PULL REQUESTS</text><text x="566" y="170" class="value" fill="#6e7681">0</text><text x="756" y="170" class="value" fill="#e6edf3">20</text>
 <circle cx="34" cy="198" r="4" fill="#4493f8"/><text x="48" y="203" class="label">Issue</text><text x="101" y="203" class="latin">ISSUES</text><text x="566" y="206" class="value" fill="#6e7681">0</text><text x="756" y="206" class="value" fill="#e6edf3">1</text>
 <line x1="26" y1="216" x2="854" y2="216" stroke="#30363d" stroke-opacity="0.6"/>
-<rect x="48" y="226" width="83" height="26" rx="13" fill="#4493f8" fill-opacity="0.10"/><circle cx="60" cy="239" r="3" fill="#4493f8"/><text x="68" y="243" class="chip" fill="#9198a1">Stars</text><text x="119" y="243" class="chipv" fill="#e6edf3">16</text><rect x="142" y="226" width="109" height="26" rx="13" fill="#3fb950" fill-opacity="0.10"/><circle cx="154" cy="239" r="3" fill="#3fb950"/><text x="162" y="243" class="chip" fill="#9198a1">Followers</text><text x="239" y="243" class="chipv" fill="#e6edf3">11</text><rect x="263" y="226" width="83" height="26" rx="13" fill="#ab7df8" fill-opacity="0.10"/><circle cx="275" cy="239" r="3" fill="#ab7df8"/><text x="283" y="243" class="chip" fill="#9198a1">Repos</text><text x="334" y="243" class="chipv" fill="#e6edf3">12</text>
+<rect x="48" y="226" width="83" height="26" rx="13" fill="#4493f8" fill-opacity="0.10"/><circle cx="60" cy="239" r="3" fill="#4493f8"/><text x="68" y="243" class="chip" fill="#9198a1">Stars</text><text x="119" y="243" class="chipv" fill="#e6edf3">16</text><rect x="142" y="226" width="109" height="26" rx="13" fill="#3fb950" fill-opacity="0.10"/><circle cx="154" cy="239" r="3" fill="#3fb950"/><text x="162" y="243" class="chip" fill="#9198a1">Followers</text><text x="239" y="243" class="chipv" fill="#e6edf3">12</text><rect x="263" y="226" width="83" height="26" rx="13" fill="#ab7df8" fill-opacity="0.10"/><circle cx="275" cy="239" r="3" fill="#ab7df8"/><text x="283" y="243" class="chip" fill="#9198a1">Repos</text><text x="334" y="243" class="chipv" fill="#e6edf3">12</text>
 </svg>

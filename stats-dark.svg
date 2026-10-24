@@ -13,7 +13,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC','Pin
 <rect x="0.5" y="0.5" width="879" height="263" rx="16" fill="#0d1117" stroke="#30363d"/>
 <rect x="26" y="26" width="4" height="21" rx="2" fill="#4493f8"/>
 <text x="40" y="43" class="title">活跃度统计</text>
-<text x="854" y="42" class="updated" text-anchor="end">更新于 2026-10-25 05:42 · UTC+8</text>
+<text x="854" y="42" class="updated" text-anchor="end">更新于 2026-10-25 07:54 · UTC+8</text>
 <line x1="26" y1="60" x2="854" y2="60" stroke="#30363d"/>
 <text x="48" y="86" class="head">指标</text>
 <text x="566" y="86" class="head" text-anchor="middle">今日</text>

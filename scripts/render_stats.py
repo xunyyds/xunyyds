@@ -22,8 +22,8 @@ THEMES = {
         "border": "#d1d9e0",
         "divider": "#d8dee4",
         "text": "#1f2328",
-        "muted": "#59636e",
-        "faint": "#8c959f",
+        "muted": "#4a5560",
+        "faint": "#7d868f",
         "accent": "#2f81f7",
         "commit": "#1a7f37",
         "pr": "#8250df",
@@ -63,6 +63,27 @@ def api(path, params, token):
         return json.load(resp)
 
 
+def sum_stars(token, per_page=100):
+    total = 0
+    page = 1
+    while page <= 10:
+        try:
+            repos = api("/users/" + USER + "/repos", {"per_page": per_page, "page": page, "type": "owner"}, token)
+        except urllib.error.HTTPError as exc:
+            if exc.code in (401, 403):
+                raise RuntimeError("仓库列表查询失败：" + str(exc))
+            break
+        except (urllib.error.URLError, TimeoutError):
+            break
+        if not repos:
+            break
+        total += sum(int(repo.get("stargazers_count") or 0) for repo in repos)
+        if len(repos) < per_page:
+            break
+        page += 1
+    return total
+
+
 def count(path, query, token, attempts=4):
     last = None
     for attempt in range(attempts):
@@ -89,12 +110,18 @@ def collect():
         "commits_total": ("/search/commits", "author:" + USER),
         "prs_today": ("/search/issues", "author:" + USER + " type:pr created:>=" + since_text),
         "prs_total": ("/search/issues", "author:" + USER + " type:pr"),
+        "issues_today": ("/search/issues", "author:" + USER + " type:issue created:>=" + since_text),
+        "issues_total": ("/search/issues", "author:" + USER + " type:issue"),
     }
 
     def run(token, label):
         stats = {}
         for key, (path, query) in queries.items():
             stats[key] = count(path, query, token)
+        profile = api("/users/" + USER, {}, token)
+        stats["followers"] = profile.get("followers", 0)
+        stats["public_repos"] = profile.get("public_repos", 0)
+        stats["stars"] = sum_stars(token)
         stats["updated"] = now.strftime("%Y-%m-%d %H:%M")
         print("[" + label + "] " + json.dumps(stats, ensure_ascii=False), file=sys.stderr)
         return stats
@@ -118,7 +145,7 @@ def esc(value):
 
 def render(stats, theme_name):
     theme = THEMES[theme_name]
-    width, height = 880, 190
+    width, height = 880, 264
     today_x, total_x = 566, 756
 
     def text_width(text, size):
@@ -151,6 +178,31 @@ def render(stats, theme_name):
         )
         return "".join(parts)
 
+    chips = [
+        ("Stars", stats.get("stars", 0), theme["accent"]),
+        ("Followers", stats.get("followers", 0), theme["commit"]),
+        ("Repos", stats.get("public_repos", 0), theme["pr"]),
+    ]
+    chip_parts = []
+    chip_y = 226
+    chip_x = 48
+    for name, value, dot in chips:
+        w = 26 + text_width(name, 11) + 10 + text_width(str(value), 11.5)
+        chip_parts.append(
+            '<rect x="%d" y="%d" width="%.0f" height="26" rx="13" fill="%s" fill-opacity="0.10"/>'
+            % (chip_x, chip_y, w, dot)
+        )
+        chip_parts.append(
+            '<circle cx="%d" cy="%d" r="3" fill="%s"/>' % (chip_x + 12, chip_y + 13, dot)
+        )
+        chip_parts.append(
+            '<text x="%d" y="%d" class="chip" fill="%s">%s</text>' % (chip_x + 20, chip_y + 17, theme["muted"], esc(name))
+        )
+        chip_parts.append(
+            '<text x="%.0f" y="%d" class="chipv" fill="%s">%s</text>' % (chip_x + w - 12, chip_y + 17, theme["text"], esc(value))
+        )
+        chip_x += int(w) + 12
+
     lines = [
         '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d"'
         ' role="img" aria-label="活跃度统计">' % (width, height, width, height),
@@ -162,6 +214,9 @@ def render(stats, theme_name):
         ".label{font-size:14.5px;font-weight:600;fill:%s}" % theme["text"],
         ".latin{font-size:9.5px;fill:%s;letter-spacing:1.1px}" % theme["faint"],
         ".value{font-size:23px;font-weight:700;text-anchor:middle;"
+        "font-variant-numeric:tabular-nums}",
+        ".chip{font-size:11px;fill:%s}" % theme["muted"],
+        ".chipv{font-size:11.5px;font-weight:700;text-anchor:end;"
         "font-variant-numeric:tabular-nums}",
         "</style></defs>",
         '<rect x="0.5" y="0.5" width="%d" height="%d" rx="16" fill="%s" stroke="%s"/>'
@@ -178,6 +233,10 @@ def render(stats, theme_name):
         % (width - 26, theme["divider"]),
         row(126, theme["commit"], "提交", "COMMITS", stats["commits_today"], stats["commits_total"]),
         row(162, theme["pr"], "PR", "PULL REQUESTS", stats["prs_today"], stats["prs_total"]),
+        row(198, theme["accent"], "Issue", "ISSUES", stats.get("issues_today", 0), stats.get("issues_total", 0)),
+        '<line x1="26" y1="216" x2="%d" y2="216" stroke="%s" stroke-opacity="0.6"/>'
+        % (width - 26, theme["divider"]),
+        "".join(chip_parts),
         "</svg>",
     ]
     return "\n".join(lines) + "\n"

@@ -1,8 +1,11 @@
 name: Snake 7-Color Random On Load
 on:
   schedule:
-    - cron: "0 1-22/3 * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types:
+      - stats-refresh
   push:
     branches:
       - main
@@ -12,6 +15,10 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+concurrency:
+  group: snake-stats
+  cancel-in-progress: false
 
 jobs:
   build:
